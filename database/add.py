@@ -49,3 +49,5 @@ class Add(object):
             print "File open error : " + filename + "\nplease check the filename"
             return False
 
+if __name__ == '__main__':
+    data = {}
