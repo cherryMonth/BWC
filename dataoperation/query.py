@@ -52,4 +52,6 @@ class Query(object):
                 data.append(line)
         return data
 
-
+if __name__ == '__main__':
+    # print Query().query_target_keys('../database/a.csv')
+    print Query().query_target_info('../InData/teacherInfo.csv',{'asd','asd'})

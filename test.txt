@@ -1,0 +1,153 @@
+dasebase 模块测试
+
+Read类
+测试函数　read(filename, key_list=None)
+测试数据：
+filename: ../InData/teacherInfo.csv
+key_list: 缺省
+
+预期结果: 文件中所有的信息　
+实际结果: [{'TeacherID': '2004355', 'WeChatID': 'Tp_rt55', 'TeacherName': '刘於勋'}, {'TeacherID': '2004633', 'WeChatID': 'wonka80', 'TeacherName': '王珂'}]
+
+filename: zcxzc #错误文件名
+key_list: 缺省
+预期结果：　返回空列表
+实际结果:  []
+
+filename: ../InData/teacherInfo.csv
+key_list: {'TeacherID':'2004633'}
+
+预期结果:找到满足给定关键词所有信息　返回 [{'TeacherID': '2004633', 'WeChatID': 'wonka80', 'TeacherName': '王珂'}]
+
+实际结果:[{'TeacherID': '2004633', 'WeChatID': 'wonka80', 'TeacherName': '王珂'}]
+
+filename: ../InData/teacherInfo.csv
+key_list: {'xxx':'xxxx'}
+
+预期结果:查询不到任何有效信息　返回空列表 []
+实际结果:[] 
+
+Add　类
+测试函数　add(filename, key_list=None)
+测试数据：
+filename: a.csv 要创建的新文件
+key_list: 缺省
+
+预期结果: 创建文件a.csv　但是文件内容为空
+实际结果: 创建了文件a.csv 文件为空
+
+filename: a.csv　已经创建过
+key_list: [{'TeacherID': '2004633', 'WeChatID': 'wonka80', 'TeacherName': '王珂'}]
+
+预期结果: 向文件添加给定的数据但是没有表头
+实际结果: wonka80,2004633,王珂
+
+filename: b.csv　没有创建过
+key_list: [{'TeacherID': '2004633', 'WeChatID': 'wonka80', 'TeacherName': '王珂'}]
+
+预期结果: 向文件添加给定的数据有表头
+实际结果: 
+WeChatID,TeacherID,TeacherName
+wonka80,2004633,王珂
+
+filename: a.csv　创建过
+key_list: [{'WeChatID': 'wonka80', 'TeacherName': '王珂'}]
+
+预期结果: 程序写入信息但是缺少TeacherID项
+实际结果: wonka80,王珂
+
+Write　类
+测试函数 write(filename, key_list=None)
+测试数据:
+filename: b.csv
+key_list: [{'TeacherID': '2004633', 'WeChatID': 'wonka80', 'TeacherName': '王珂'}]
+
+预期结果: 覆盖掉原来的数据并向文件写入信息创建表头
+实际结果: 
+WeChatID,TeacherID,TeacherName
+wonka80,2004633,王珂
+
+filename: b.csv
+key_list: [{'WeChatID': 'wonka80', 'TeacherName': '王珂'}]
+
+预期结果: 覆盖掉原来的数据并向文件写入信息创建表头
+实际结果:
+WeChatID,TeacherName
+wonka80,王珂
+
+dataoperation 模块
+测试类: Query
+测试函数: query_target_keys(obj)
+测试数据:
+obj: asd　不存在的文件名
+
+预期结果：　返回空列表
+实际结果: []
+
+obj: a.txt 非csv文件
+预期结果：　返回空列表
+实际结果: []
+
+obj: ../InData/teacherInfo.csv　有效的csv文件
+预期结果：　以列表的形式返回表头  ['TeacherID', 'TeacherName', 'WeChatID']
+实际结果:   ['TeacherID', 'TeacherName', 'WeChatID']
+
+obj: ../database/a.csv　空csv文件
+预期结果: 返回空列表 []
+实际结果: []
+
+函数: query_target_info(filename="", parameter=None)
+filename: ../InData/teacherInfo.csv
+parameter: 缺省
+
+预期结果：返回文件的所有信息　每一行存于字典中，以列表的形式返回表头
+实际结果: [{'TeacherID': '2004355', 'WeChatID': 'Tp_rt55', 'TeacherName': '\xe5\x88\x98\xe6\x96\xbc\xe5\x8b\x8b'}, {'TeacherID': '2004633', 'WeChatID': 'wonka80', 'TeacherName': '\xe7\x8e\x8b\xe7\x8f\x82'}]
+
+filename: ../InData/teacherInfo.csv
+parameter: {'WeChatID':'wonka80'}
+
+预期结果：　所有满足条件的行以字典的形式存入列表中返回 [{'TeacherID': '2004633', 'WeChatID': 'wonka80', 'TeacherName': '\xe7\x8e\x8b\xe7\x8f\x82'}]
+实际结果: [{'TeacherID': '2004633', 'WeChatID': 'wonka80', 'TeacherName': '\xe7\x8e\x8b\xe7\x8f\x82'}]
+
+filename: ../InData/teacherInfo.csv
+parameter: {'TeacherID':'123'}
+
+预期结果: 找不到满足的行　返回空列表 []
+实际结果: []
+
+filename: ../InData/teacherInfo.csv
+parameter: {'asd','asd'}
+
+预期结果：　找不到满足的行，返回空列表
+实际结果: 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

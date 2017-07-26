@@ -49,3 +49,6 @@ class Add(object):
             print "File open error : " + filename + "\nplease check the filename"
             return False
 
+if __name__ == '__main__':
+
+    Add().add('b.csv',[{'WeChatID': 'wonka80', 'TeacherName': '王珂'}])
