@@ -28,9 +28,8 @@ class ImportFile(object):
         return data
 
     @staticmethod
-    def course_operation(*out_file):
+    def course_operation(out_file,path=''):
         course_data = DataManage(DataManage.target_info, args=(out_file,)).run()
-
         if not course_data:
             return None
 
@@ -95,3 +94,5 @@ class ImportFile(object):
     def import_class(self, out):
         return self.import_file('../InData/courseInfo.csv', out,
                                 self.course_info, [['CourseID', 'ClassName']], self.course_operation)
+if __name__ == '__main__':
+    ImportFile().import_class('../InData/course.csv')

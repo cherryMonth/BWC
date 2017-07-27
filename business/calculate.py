@@ -47,7 +47,7 @@ class AuxiliaryFunction(object):
         info['grade'] = grade
         return info
 
-    def statistics_calculation(self, stu_info_list,_type=''):  # 给定一定数量的学生考勤信息计算该信息内所有学生的考勤结果
+    def statistics_calculation(self, stu_info_list, _type=''):  # 给定一定数量的学生考勤信息计算该信息内所有学生的考勤结果
         absence = {}
         keys = {'null': 0, 'normal': 1, 'Late': 2, 'leaveEarlier': 3, 'Absence': 4, 'Submitted': 5, 'approve': 6}
 

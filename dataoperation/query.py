@@ -4,7 +4,6 @@ import re
 
 from database.database import DataAPI
 
-
 class Query(object):
 
     # 查询目标信息通过不同的参数达到查询不同的效果
@@ -43,6 +42,7 @@ class Query(object):
 
         #   查找符合对应函数的信息的文件名
         file_list = []
+
         for f_path, dirs, fs in os.walk('..'):
             for f in fs:
                 file_list.append(os.path.join(f_path, f))
@@ -52,4 +52,9 @@ class Query(object):
                 data.append(line)
         return data
 
-
+if __name__ == '__main__':
+    # print Query().query_target_keys('../database/a.csv')
+    # print Query().query_target_info('../InData/teacherInfo.csv', {'asd', 'asd'})
+    #print Query().query_target_info( )
+    print type(Query.query_target_keys)
+    print Query().query_file_names('asd')

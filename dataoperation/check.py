@@ -86,3 +86,11 @@ class Check(object):
                 return True
         return False
 
+if __name__ == '__main__':
+    key = [{'1': '1', '3': '3', '2': '2'}, {'1': '2', '3': '3', '2': '3'}]
+    key1 = [{'1': '1', '2': '2', '3': '4'}]
+    keys = ['1', '2']
+    _type = 'dl'
+    #print Check.del_repeat(key1, key, keys, _type)
+    key = [{'WeChatID':'','TeacherID':'200ss4633','TeacherName':'王珂'}]
+    print Check.format_check(key,{"TeacherID": '^[\d]{7}$', "TeacherName": r'^[\x80-\xff]{6,18}$', "WeChatID": '^[a-zA-Z0-9_]+$'})

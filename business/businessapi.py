@@ -61,8 +61,8 @@ class Business(BaseBusiness):
         key = copy.deepcopy(key)
         for line in self.list:
             if key['ClassID'] in list(line.key['ClassList']):
-                key['CourseID'] = line['CourseID']
-                key['TeacherID'] = line['TeacherID']
+                key['CourseID'] = line.key['CourseID']
+                key['TeacherID'] = line.key['TeacherID']
                 return self.stufunct.insert_leave_record(key)
         return False
 
@@ -97,7 +97,7 @@ class Business(BaseBusiness):
 
     def dis_info(self,key):
         for line in self.list:
-            if key['TeacherID'] == line.key['TeacherID']:  # 1
+            if key['TeacherID'] == line.key['TeacherID']:
                 print '您当前正在对课程%s进行考勤 ' % (line.key['course_info'][line.key['CourseID']]['CourseName'])
                 if not line.random_info:
                     return True

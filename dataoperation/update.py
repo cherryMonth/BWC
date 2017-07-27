@@ -26,4 +26,9 @@ class Update(object):
             print 'invalid parameter : %s' % (_type,)
             return False
 
-
+if __name__ == '__main__':
+    filename = 'c.csv'
+    _type = 'a'
+    out_data = [{'WeChatID':'wonka80','TeacherID':'20sss3','TeacherName':'王珂'}]
+    keys = []
+    Update.update(filename,_type,out_data,keys)

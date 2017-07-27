@@ -23,7 +23,7 @@ class StudentFun(object):
             keys = stu_info[0].keys()
             if _type not in keys:
                 _type = 'checkinResult'
-            stu_info = AuxiliaryFunction().statistics_calculation(stu_info,_type)
+            stu_info = AuxiliaryFunction().statistics_calculation(stu_info, _type)
 
         name = DataManage(DataManage.target_info, args=('../InData/teacherInfo.csv',
                                                         {'TeacherID': teacher_id})).run()[0]['TeacherName']
@@ -37,6 +37,7 @@ class StudentFun(object):
                     print '%s老师在%s课上发起考勤,您在此次考勤状态为: %s' % (name, class_name, item['Type'])
                     return True
             print '%s老师在%s课上发起考勤,您在此次考勤状态为: normal' % (name, class_name)
+
         else:
             length = len(stu_info[0].keys())
             for info in stu_info:
@@ -52,7 +53,7 @@ class StudentFun(object):
         data = {}
         class_info = DataManage(DataManage.target_info, args=('../InData/courseInfo.csv',{'ClassName': key['ClassID']})).run()
 
-        if not  class_info:
+        if not class_info:
             print '当前没有与您相关的课程!'
             return False
 
@@ -79,7 +80,7 @@ class StudentFun(object):
             num['Absence'] = 0
             num['approve'] = 0
             num['leaveEarlier'] = 0
-            print '第%d门课考勤信息如下:' % (index + 1)
+            print '第%d门课程考勤信息如下:' % (index + 1)
             if self.view(file_list[index], key['StuID'], teacher_id[index], 0, num):
                 print '您正常考勤%d次,缺勤%d次,请假%d次,早退%d次! 出勤率%.2f %%' %(num['normal'], num['Absence'],
                             num['approve'], num['leaveEarlier'],
@@ -90,18 +91,16 @@ class StudentFun(object):
     def real_view(self, key):
 
         seq_info = DataManage(DataManage.target_info, args=('../InData/seq.csv',)).run()
+        class_info = DataManage(DataManage.target_info, args=('../InData/courseInfo.csv',
+                                                              {'ClassName': key['ClassID']})).run()
 
-
-        class_info = DataManage(DataManage.target_info, args=('../InData/courseInfo.csv',{'ClassName': key['ClassID']})).run()
-
-        if not  class_info:
+        if not class_info:
             print '当前没有与您相关的课程!'
             return False
 
         data = {}
-
         for _class in class_info:
-            if not data.has_key(_class['CourseID']):
+            if not data. has_key(_class['CourseID']):
                 data[_class['CourseID']] = _class['TeacherID']
 
         keys = data.keys()
@@ -121,7 +120,9 @@ class StudentFun(object):
             pass
         else:
             filename = '../InData/'+line['TeacherID']+'_'+line['CourseID']+'_'+line['SeqID']+'_Detail.csv'
+
         self.view(filename, key['StuID'], line['TeacherID'] , line['SeqID'], None)
+        return True
 
     @staticmethod
     def insert_leave_record(key):  # 向历史记录添加请假 学生请假休息包括 学号　提交类型　请假证明　提交时间
@@ -131,14 +132,14 @@ class StudentFun(object):
         count = 0
         for seq in seq_info:
             if seq['TeacherID'] == key['TeacherID']:
-                if seq['ClassID'] == seq['ClassID']:
+                if seq['CourseID'] == key['CourseID']:
                     count = seq['SeqID']
 
         if not count:
             print '满足您输入信息的考勤细节表不存在!'
             return False
 
-        filename = '../InData/'+key['TeacherID']+'_'+key['ClassID']+'_'+count+'_Detail.csv'
+        filename = '../InData/'+key['TeacherID']+'_'+key['CourseID']+'_'+str(count)+'_Detail.csv'
 
         if DataManage(DataManage.target_info, args=(filename, {'StuID': key['StuID'], 'checkinType': 'leave'})).run():
             print '您在该次考勤中已经申请过请假无法再次申请!'
@@ -155,3 +156,7 @@ class StudentFun(object):
         return DataManage(DataManage.update, args=(filename, 'a', [data])).run()
 
 
+if __name__ == '__main__':
+    key = {'ClassID': '\xe8\xbd\xaf\xe4\xbb\xb6\xe5\xb7\xa5\xe7\xa8\x8b1401', 'StuName': '\xe9\x98\xbf\xe8\x90\xa8\xe5\xbe\xb7', 'FeaturePath': 'D/:/wfsf_137_face.bin(jpg)', 'StuID': '201516920711', 'WeChatID': 'wfsf_137'}
+    key = {'ClassID': '软件工程1402', 'StuName': '石家斌', 'FeaturePath': 'D/:/wf2sf_129_face.bin(jpg)', 'StuID': '201416920220','WeChatID':'wf2sf_129'}
+    StudentFun().history(key)

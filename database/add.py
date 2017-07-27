@@ -50,4 +50,4 @@ class Add(object):
             return False
 
 if __name__ == '__main__':
-    data = {}
+    Add().add('b.csv',[{'WeChatID': 'wonka80', 'TeacherName': '王珂'}])

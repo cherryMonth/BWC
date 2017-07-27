@@ -1,0 +1,403 @@
+dasebase 模块测试
+
+Read类
+测试函数　read(filename, key_list=None)
+测试数据：
+filename: ../InData/teacherInfo.csv
+key_list: 缺省
+
+预期结果: 文件中所有的信息　
+实际结果: [{'TeacherID': '2004355', 'WeChatID': 'Tp_rt55', 'TeacherName': '刘於勋'}, {'TeacherID': '2004633', 'WeChatID': 'wonka80', 'TeacherName': '王珂'}]
+
+filename: zcxzc #错误文件名
+key_list: 缺省
+预期结果：　返回空列表
+实际结果:  []
+
+filename: ../InData/teacherInfo.csv
+key_list: {'TeacherID':'2004633'}
+
+预期结果:找到满足给定关键词所有信息　返回 [{'TeacherID': '2004633', 'WeChatID': 'wonka80', 'TeacherName': '王珂'}]
+
+实际结果:[{'TeacherID': '2004633', 'WeChatID': 'wonka80', 'TeacherName': '王珂'}]
+
+filename: ../InData/teacherInfo.csv
+key_list: {'xxx':'xxxx'}
+
+预期结果:查询不到任何有效信息　返回空列表 []
+实际结果:[] 
+
+Add　类
+测试函数　add(filename, key_list=None)
+测试数据：
+filename: a.csv 要创建的新文件
+key_list: 缺省
+
+预期结果: 创建文件a.csv　但是文件内容为空
+实际结果: 创建了文件a.csv 文件为空
+
+filename: a.csv　已经创建过
+key_list: [{'TeacherID': '2004633', 'WeChatID': 'wonka80', 'TeacherName': '王珂'}]
+
+预期结果: 向文件添加给定的数据但是没有表头
+实际结果: wonka80,2004633,王珂
+
+filename: b.csv　没有创建过
+key_list: [{'TeacherID': '2004633', 'WeChatID': 'wonka80', 'TeacherName': '王珂'}]
+
+预期结果: 向文件添加给定的数据有表头
+实际结果: 
+WeChatID,TeacherID,TeacherName
+wonka80,2004633,王珂
+
+filename: a.csv　创建过
+key_list: [{'WeChatID': 'wonka80', 'TeacherName': '王珂'}]
+
+预期结果: 程序写入信息但是缺少TeacherID项
+实际结果: wonka80,王珂
+
+Write　类
+测试函数 write(filename, key_list=None)
+测试数据:
+filename: b.csv
+key_list: [{'TeacherID': '2004633', 'WeChatID': 'wonka80', 'TeacherName': '王珂'}]
+
+预期结果: 覆盖掉原来的数据并向文件写入信息创建表头
+实际结果: 
+WeChatID,TeacherID,TeacherName
+wonka80,2004633,王珂
+
+filename: b.csv
+key_list: [{'WeChatID': 'wonka80', 'TeacherName': '王珂'}]
+
+预期结果: 覆盖掉原来的数据并向文件写入信息创建表头
+实际结果:
+WeChatID,TeacherName
+wonka80,王珂
+
+dataoperation 模块
+测试类: Query
+测试函数: query_target_keys(obj)
+测试数据:
+obj: asd　不存在的文件名
+
+预期结果：　返回空列表
+实际结果: []
+
+obj: a.txt 非csv文件
+预期结果：　返回空列表
+实际结果: []
+
+obj: ../InData/teacherInfo.csv　有效的csv文件
+预期结果：　以列表的形式返回表头  ['TeacherID', 'TeacherName', 'WeChatID']
+实际结果:   ['TeacherID', 'TeacherName', 'WeChatID']
+
+obj: ../database/a.csv　空csv文件
+预期结果: 返回空列表 []
+实际结果: []
+
+函数: query_target_info(filename="", parameter=None)
+filename: ../InData/teacherInfo.csv
+parameter: 缺省
+
+预期结果：返回文件的所有信息　每一行存于字典中，以列表的形式返回表头
+实际结果: [{'TeacherID': '2004355', 'WeChatID': 'Tp_rt55', 'TeacherName': '\xe5\x88\x98\xe6\x96\xbc\xe5\x8b\x8b'}, {'TeacherID': '2004633', 'WeChatID': 'wonka80', 'TeacherName': '\xe7\x8e\x8b\xe7\x8f\x82'}]
+
+filename: ../InData/teacherInfo.csv
+parameter: {'WeChatID':'wonka80'}
+
+预期结果：　所有满足条件的行以字典的形式存入列表中返回 [{'TeacherID': '2004633', 'WeChatID': 'wonka80', 'TeacherName': '\xe7\x8e\x8b\xe7\x8f\x82'}]
+实际结果: [{'TeacherID': '2004633', 'WeChatID': 'wonka80', 'TeacherName': '\xe7\x8e\x8b\xe7\x8f\x82'}]
+
+filename: ../InData/teacherInfo.csv
+parameter: {'TeacherID':'123'}
+
+预期结果: 找不到满足的行　返回空列表 []
+实际结果: []
+
+filename: ../InData/teacherInfo.csv
+parameter: {'asd','asd'}
+
+预期结果：　找不到满足的行，返回空列表
+实际结果: []
+
+filename: 缺省
+parameter: 缺省
+
+预期结果: []
+实际结果: []
+
+测试函数 ：query_file_names(operation)
+
+operation: Query.query_target_keys
+
+预期结果：返回所有使使函数query_target_keys返回结果为非空的文件名
+['..\\database\\b.csv', '..\\InData\\1.csv', '..\\InData\\2004633_51610189_1_Detail.csv', '..\\InData\\2004633_51610189_2_Detail.csv', '..\\InData\\2004633_51610189_Sum.csv', '..\\InData\\course.csv', '..\\InData\\courseInfo.csv', '..\\InData\\seq.csv', '..\\InData\\set.csv', '..\\InData\\studentInfo.csv', '..\\InData\\teacherInfo.csv']
+实际结果: ['..\\database\\b.csv', '..\\InData\\1.csv', '..\\InData\\2004633_51610189_1_Detail.csv', '..\\InData\\2004633_51610189_2_Detail.csv', '..\\InData\\2004633_51610189_Sum.csv', '..\\InData\\course.csv', '..\\InData\\courseInfo.csv', '..\\InData\\seq.csv', '..\\InData\\set.csv', '..\\InData\\studentInfo.csv', '..\\InData\\teacherInfo.csv']
+
+operation: asdasd  随意的无意义字符或者不是有的判断函数
+预期结果: 调用崩溃抛出异常
+实际结果： TypeError: 'str' object is not callable
+
+测试类: Check
+测试函数: del_repeat(out_data, in_data=None, keys=None, _type='w')
+
+测试数据：
+out_data =  [{'1': '1', '2': '2', '3': '3'}]
+in_data = [{'1': '2', '2': '3', '3': '3'}]
+keys = ['3']
+_type = 'w'
+
+预期结果: [{'1': '2', '2': '3', '3': '3'}]
+实际结果: [{'1': '2', '2': '3', '3': '3'}]
+
+out_data =  [{'1': '1', '2': '2', '3': '3'}]
+in_data = [{'1': '2', '2': '3', '3': '3'}]
+keys = []
+_type = 'w'
+
+预期结果：  [{'1': '1', '2': '2', '3': '3'},{'1': '2', '2': '3', '3': '3'}]
+实际结果: [{'1': '1', '3': '3', '2': '2'}, {'1': '2', '3': '3', '2': '3'}]
+
+out_data =  [{'1': '1', '2': '2', '3': '3'}]
+in_data = [{'1': '1', '2': '3', '3': '3'}]
+keys = ['1','2']
+_type = 'w'
+
+预期结果: [{'1': '1', '2': '2', '3': '3'},{'1': '2', '2': '3', '3': '3'}]
+实际结果:[{'1': '1', '3': '3', '2': '2'}, {'1': '2', '3': '3', '2': '3'}]
+
+out_data =  [{'1': '1', '2': '2', '3': '3'}]
+in_data = [{'1': '1', '2': '2', '3': '5'}]
+keys = ['1','2']
+_type = 'w'
+
+预期结果:  [{'1': '1', '2': '2', '3': '5'}]
+实际结果: [{'1': '1', '3': '5', '2': '2'}]
+
+out_data =  [{'1': '1', '2': '2', '3': '3'}]
+in_data = [{'1': '1', '2': '2', '3': '3'}]
+keys = []
+_type = 'w'
+
+预期结果: [{'1': '1', '2': '2', '3': '3'}]
+实际结果: [{'1': '1', '3': '3', '2': '2'}]
+
+out_data =  [{'1': '1', '2': '2', '3': '3'}]
+in_data = [{'1': '1', '2': '3', '3': '4'}]
+keys = ['1']
+_type = 'dl'
+
+预期结果: []
+实际结果: []
+
+out_data =  [{'1': '1', '2': '2', '3': '3'}]
+in_data = [{'1': '1', '2': '2', '3': '4'}]
+keys = ['1']
+_type = 'dl'
+
+预期结果: []
+实际结果: []
+
+测试函数: format_check(data, _format=None)
+data = [{'WeChatID':'wonka80','TeacherID':'2004633','TeacherName':'王珂'}]
+
+_format =  {"TeacherID": '^[\d]{7}$', "TeacherName": r'^[\x80-\xff]{6,18}$', "WeChatID": '^[a-zA-Z0-9_]+$'}
+
+预期结果: 验证成功 错误信息为空
+实际结果: {}
+
+data = [{'WeChatID':'wonka80','TeacherID':'20sss3','TeacherName':'王珂'}]
+
+_format =  {"TeacherID": '^[\d]{7}$', "TeacherName": r'^[\x80-\xff]{6,18}$', "WeChatID": '^[a-zA-Z0-9_]+$'}
+
+预期结果: 出现错误信息并显示行号
+实际结果: {'Error line row [1]': 'The line information does not conform to the standard!'}
+
+data = [{'xxxx':'wonka80','TeacherID':'20sss3','TeacherName':'王珂'}]
+
+_format =  {"TeacherID": '^[\d]{7}$', "TeacherName": r'^[\x80-\xff]{6,18}$', "WeChatID": '^[a-zA-Z0-9_]+$'}
+
+预期结果: 出现错误信息提示缺少键值
+实际结果： {'Error line row [1]': 'Data WeChatID The key or value does not exist!'}
+
+data = [{'WeChatID':‘','TeacherID':'20sss3','TeacherName':'王珂'}]
+
+_format =  {"TeacherID": '^[\d]{7}$', "TeacherName": r'^[\x80-\xff]{6,18}$', "WeChatID": '^[a-zA-Z0-9_]+$'}
+
+
+预期结果：提示不合法信息
+实际结果: {'Error line row [1]': 'The line information does not conform to the standard!'}
+
+
+测试类: Update
+测试函数: update(filename, _type, out_data, keys=None)
+
+测试数据: 
+filename: b.csv 未创建
+_type: 'w'
+out_data: [{'WeChatID':'wonka80','TeacherID':'20sss3','TeacherName':'王珂'}]
+keys:缺省
+
+预期结果: 把对应信息和表头写入文件中
+实际结果： 
+WeChatID,TeacherID,TeacherName
+wonka80,20sss3,王珂
+
+filename: b.csv
+_type: 'a'
+out_data: [{'WeChatID':'wonka80','TeacherID':'20sss3','TeacherName':'王珂'}]
+keys:缺省
+
+预期结果: 在末尾添加文件信息
+实际结果:
+WeChatID,TeacherID,TeacherName
+wonka80,20sss3,王珂
+wonka80,20sss3,王珂
+
+filename: b.csv
+_type:'dl'
+out_data:[{'WeChatID':'wonka80','TeacherID':'20sss3','TeacherName':'王珂'}]
+keys :['WeChatID']
+
+预期结果: 删除表中与外部微信号相同的一条数据。
+WeChatID,TeacherID,TeacherName
+wonka80,20sss3,王珂
+实际结果：
+WeChatID,TeacherID,TeacherName
+wonka80,20sss3,王珂
+
+filename: b.csv
+_type:'dl'
+out_data:[{'WeChatID':'wonka80','TeacherID':'20sss3','TeacherName':'王珂'}]
+keys :['WeChatID']
+
+预期结果: 文件为空
+实际结果: 文件为空
+
+filename: b.csv
+_type:'a'
+out_data:[{'WeChatID':'wonka80','TeacherID':'20sss3','TeacherName':'王珂'}]
+keys :['WeChatID']
+
+预期结果:向文件追加信息但是没有表头
+实际结果:wonka80,20sss3,王珂
+
+filename: c.csv 未创建
+_type:'a'
+out_data:[{'WeChatID':'wonka80','TeacherID':'20sss3','TeacherName':'王珂'}]
+keys :['WeChatID']
+
+预期结果: 创建文件，自动创建表头，追加信息
+实际结果: 
+WeChatID,TeacherID,TeacherName
+wonka80,20sss3,王珂
+
+bussiness 模块测试
+测试类 :ImportFile
+测试函数 import_stu(self, out)
+                         I
+out: ../InData/studentInfo.csv
+
+预期效果: 对studentInfo.csv进行去重   studentInfo.csv不存在完全相同的两项
+实际效果: 
+  StuID,ClassID,StuName,WeChatID,FeaturePath
+201516920711,软件工程1401,阿萨德,wfsf_137,D/:/wfsf_137_face.bin(jpg)
+201416920105,软件工程1401,陈正航,wfsf_138,D/:/wfsf_138_face.bin(jpg)
+201416920106,软件工程1401,苏有朋,wfs1f_139,D/:/wfs1f_139_face.bin(jpg)
+201416920215,软件工程1402,张梦祥,wfsf_125,D/:/wfsf_125_face.bin(jpg)
+201416920217,软件工程1402,刘鑫,wfsf_126,D/:/wfsf_126_face.bin(jpg)
+
+测试函数: import_teacher(out)
+out: ../InData/teacherInfo.csv
+
+预期效果: 对teacherInfo.csv进行去重，不存在完全相同的两项
+实际效果:
+WeChatID,TeacherID,TeacherName
+Tp_rt55,2004355,刘於勋
+wonka80,2004633,王珂
+
+测试函数:  import_class(out)
+out: ../InData/courseInfo.csv
+
+预期效果: 对courseInfo.csv进行去重，不存在完全相同的两项
+实际效果:   
+存在非法键值无法导入!
+文件不存在或与标准形式不符,请检查您的输入!
+原因分析:  必须导入教务系统中的数据。
+
+out: ../InData/course.csv
+
+预期效果： 向courseInfo.csv 追加内容 并对courseInfo.csv进行去重
+实际效果:         
+CourseID,TeacherID,ClassName,CourseName
+51610189,2004633,软件工程1401,软件工程概论
+51610189,2004633,软件工程1402,软件工程概论
+51610189,2004633,计算机科学与技术1401,软件工程概论
+51610054,2004633,软件工程1401,aasdas
+51610055,2004355,软件工程1402,操作系统原理
+51610055,2004355,软件工程1403,操作系统原理
+51610189,2004633,软件工程1403,软件工程概论
+51610055,2004355,软件工程1401,操作系统原理
+
+测试类  StudentFun
+测试函数 real_view(self, key)
+测试数据：
+key = {'ClassID': '软件工程1401', 'StuName': '阿萨德', 'FeaturePath': 'D/:/wfsf_137_face.bin(jpg)', 'StuID': '201516920711', 'WeChatID': 'wfsf_137'}
+
+预期结果: 显示当前的学生考勤状态 缺勤 
+实际结果: 王珂老师在软件工程概论课上发起考勤,您在此次考勤状态为: Absence
+
+key = {'ClassID': '软件工程1402', 'StuName': '石家斌', 'FeaturePath': 'D/:/wf2sf_129_face.bin(jpg)', 'StuID': '201416920220','WeChatID':'wf2sf_129'}
+
+预期结果: 该学生没有参加过考勤 不显示考勤结果 提示错误信息
+实际结果: 您最近还没有进行过一次完整的考勤!
+
+测试函数: insert_leave_record(key)
+测试数据：
+key = {'ClassID': '软件工程1401', 'StuName': '阿萨德', 'FeaturePath': 'D/:/wfsf_137_face.bin(jpg)', 'StuID': '201516920711', 'WeChatID': 'wfsf_137'}
+
+key['ProofPath'] =' asd'
+
+预期结果: (表中尚未存在该学生的请假记录且该教师正在考勤) 请假成功
+表中增加: 该学生的考勤记录
+实际结果:  
+提交假条成功!
+表中增加的内容: 201516920711,False,2017-07-27 11:02:46,asd,leave,Submitted
+
+测试函数: history(self, key)
+测试数据:
+key = {'ClassID': '软件工程1401', 'StuName': '阿萨德', 'FeaturePath': 'D/:/wfsf_137_face.bin(jpg)', 'StuID': '201516920711', 'WeChatID': 'wfsf_137'}
+
+预期数据: 按课程显示考勤结果 
+第1门课考勤信息如下:
+该教师尚未统计此次的考勤汇总信息,所以无法查看结果
+第2门课考勤信息如下:
+王珂老师在软件工程概论课上发起第1次考勤,您在此次考勤状态为: Absence
+您正常考勤0次,缺勤1次,请假0次,早退0次! 出勤率0.00 %
+
+实际结果: 
+第1门课考勤信息如下:
+该教师尚未统计此次的考勤汇总信息,所以无法查看结果
+第2门课考勤信息如下:
+王珂老师在软件工程概论课上发起第1次考勤,您在此次考勤状态为: Absence
+您正常考勤0次,缺勤1次,请假0次,早退0次! 出勤率0.00 %
+
+key = key = {'ClassID': '软件工程1402', 'StuName': '石家斌', 'FeaturePath': 'D/:/wf2sf_129_face.bin(jpg)', 'StuID': '201416920220','WeChatID':'wf2sf_129'}
+
+预期结果: 第1门课程考勤信息如下:
+该教师尚未统计此次的考勤汇总信息,所以无法查看结果
+
+实际结果:
+第1门课程考勤信息如下:
+该教师尚未统计此次的考勤汇总信息,所以无法查看结果
+
+
+
+
+
+
+
+
+
+
