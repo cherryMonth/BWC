@@ -25,7 +25,6 @@ class Business(BaseBusiness):
 
     @staticmethod
     def stu_info_test(key):
-
         stu_info = DataManage(DataManage.target_info, args=('../InData/studentInfo.csv', {'WeChatID': key})).run()
         if not stu_info:
             print '学生微信不存在请检查您的输入信息!'

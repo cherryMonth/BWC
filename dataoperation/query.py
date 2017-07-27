@@ -19,17 +19,17 @@ class Query(object):
         return []
 
     @staticmethod
-    def query_target_info(filename="", parameter=None):
+    def query_target_info(filename="", parameter=None,_open='False'):
 
         # 给定字典查询指定文件中满足字典的信息 可以使用通配符
         if Query.query_target_keys(filename):
-            return DataAPI(filename, 'r', parameter).run()
+            return DataAPI(filename, 'r', parameter, _open).run()
 
         elif not filename:
             data = []
             file_list = Query.query_file_names(Query.query_target_keys)
             for line in file_list:
-                info = DataAPI(line, 'r', parameter).run()
+                info = DataAPI(line, 'r', parameter,_open).run()
                 if info and parameter:
                     data.append(info)
             return data

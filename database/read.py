@@ -5,7 +5,7 @@ import csv
 class Read(object):
 
     @staticmethod
-    def read(filename, key_list=None):
+    def read(filename, key_list=None,_open='False'):
         # 信息通配符 一次只能接受一个原子字典
         if key_list and type(key_list) != dict:
             return []
@@ -19,11 +19,13 @@ class Read(object):
                     else:
                         count = 0
                         for (_key, item) in key_list.items():
-                            if item == '*':
-                                continue
-                            elif item == '?':
-                                count = 2
-                            elif not info. has_key(_key) or info[_key] != item:
+                            if _open == 'True':
+                                if item == '*':
+                                    continue
+                                elif item == '?':
+                                    count = 2
+                                    continue
+                            if not info. has_key(_key) or info[_key] != item:
                                 count = 1
                                 break
                         if count % 2 == 0:
@@ -37,6 +39,6 @@ class Read(object):
             return []
 
 if __name__ == '__main__':
-    _list = Read().read('xxx',{'TeacherIDx':'200463xx3'})
-    _list2 = Read().read('zxczc')
+    _list = Read().read('../InData/teacherInfo.csv',{'TeacherID':'*'},'False')
+    # _list2 = Read().read('zxczc')
     print _list
