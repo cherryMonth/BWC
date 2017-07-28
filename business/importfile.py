@@ -28,7 +28,7 @@ class ImportFile(object):
         return data
 
     @staticmethod
-    def course_operation(out_file,path=''):
+    def course_operation(out_file, path=''):
         course_data = DataManage(DataManage.target_info, args=(out_file,)).run()
         if not course_data:
             return None
